@@ -1,0 +1,44 @@
+{% extends "contenu/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Tous les textes</h1>
+
+    {% for texte in textes %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">{{ texte.titre }}</h5>
+            <p class="card-text">
+                {{ texte.contenu|slice:":300" }}{% if texte.contenu|length > 300 %}...
+                <span class="more-text" style="display: none;">{{ texte.contenu|slice:"300:" }}</span>
+                {% endif %}
+            </p>
+            {% if texte.contenu|length > 300 %}
+            <button class="btn btn-primary btn-sm read-more-btn">Lire plus</button>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const buttons = document.querySelectorAll(".read-more-btn");
+
+    buttons.forEach(function(btn) {
+        btn.addEventListener("click", function() {
+            const moreText = this.previousElementSibling.querySelector(".more-text");
+            if (moreText.style.display === "none") {
+                moreText.style.display = "inline";
+                this.innerText = "Lire moins";
+            } else {
+                moreText.style.display = "none";
+                this.innerText = "Lire plus";
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

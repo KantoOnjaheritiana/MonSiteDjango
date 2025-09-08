@@ -1,0 +1,35 @@
+{% extends 'contenu/base.html' %}
+{% block title %}Vidéos{% endblock %}
+{% block content %}
+<h2 class="mb-4">🎬 Vidéos</h2>
+
+<div class="row">
+  {% for v in videos %}
+    <div class="col-md-6 mb-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">{{ v.titre }}</h5>
+
+          {% if v.video_url %}
+            <!-- Intégration YouTube / Vimeo -->
+            <div class="ratio ratio-16x9 mb-2">
+              <iframe src="{{ v.video_url }}" title="{{ v.titre }}" allowfullscreen></iframe>
+            </div>
+          {% endif %}
+
+          {% if v.fichier %}
+            <!-- Lecture directe si upload -->
+            <video src="{{ v.fichier.url }}" class="w-100 rounded" controls></video>
+          {% endif %}
+
+          <p class="card-text mt-2">
+            <small class="text-muted">Ajouté le {{ v.date_pub|date:"d/m/Y H:i" }}</small>
+          </p>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p class="text-muted">Aucune vidéo disponible.</p>
+  {% endfor %}
+</div>
+{% endblock %}
